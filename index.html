@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiteMask</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:#fafbfc;
+  color:#0f172a;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;
+  overflow-x:hidden;position:relative;min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* 柔和光斑背景 */
+body::before{
+  content:"";position:fixed;top:-30%;left:-10%;width:80vmax;height:80vmax;
+  background:radial-gradient(circle,rgba(139,92,246,0.12) 0%,transparent 60%);
+  border-radius:50%;pointer-events:none;z-index:0;
+  animation:float1 18s ease-in-out infinite;
+}
+body::after{
+  content:"";position:fixed;bottom:-30%;right:-10%;width:80vmax;height:80vmax;
+  background:radial-gradient(circle,rgba(59,130,246,0.1) 0%,transparent 60%);
+  border-radius:50%;pointer-events:none;z-index:0;
+  animation:float2 20s ease-in-out infinite;
+}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,80px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,-60px)}}
+
+.setting-btn{
+  position:fixed;top:24px;right:24px;z-index:30;width:44px;height:44px;border-radius:14px;
+  background:#fff;border:1px solid #e5e7eb;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 4px 16px rgba(15,23,42,0.06);
+  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s,color 0.3s;
+  font-size:18px;color:#64748b;user-select:none;
+}
+.setting-btn:hover{box-shadow:0 8px 24px rgba(139,92,246,0.18);color:#8b5cf6}
+.setting-btn.spin{transform:rotate(90deg)}
+
+.setting-panel{
+  position:fixed;top:80px;right:24px;z-index:29;width:190px;max-height:0;overflow:hidden;
+  background:#fff;border:1px solid #e5e7eb;
+  border-radius:16px;box-shadow:0 16px 48px rgba(15,23,42,0.12);
+  transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1),padding 0.3s ease;padding:0;
+}
+.setting-panel.show{max-height:520px;padding:8px;overflow-y:auto}
+.setting-panel .item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-radius:10px;font-size:13px;color:#475569;cursor:pointer;
+  transition:background 0.2s,color 0.2s;
+}
+.setting-panel .item:hover{background:#f1f5f9;color:#8b5cf6}
+.setting-panel .item.active{color:#8b5cf6;font-weight:600;background:#f5f3ff}
+.setting-panel .item.active::after{content:"✓"}
+.setting-panel .divider{height:1px;background:#e5e7eb;margin:6px 4px}
+
+.float-nav{
+  position:fixed;right:20px;top:50%;transform:translateY(-50%);
+  z-index:20;display:flex;flex-direction:column;gap:12px;
+  transition:opacity 0.4s ease,transform 0.4s ease,visibility 0.4s;
+}
+.float-nav.hidden{opacity:0;visibility:hidden;transform:translateY(-50%) translateX(80px)}
+.float-btn{
+  padding:12px 18px;background:#fff;
+  border:1px solid #e5e7eb;border-radius:14px;
+  text-decoration:none;color:#334155;font-size:12px;font-weight:600;
+  box-shadow:0 4px 16px rgba(15,23,42,0.06);
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s,background 0.3s,color 0.3s,border-color 0.3s;
+  white-space:nowrap;
+}
+.float-btn:hover{background:#fff;transform:translateX(-6px);color:#8b5cf6;border-color:#c4b5fd;box-shadow:0 8px 24px rgba(139,92,246,0.15)}
+
+.wrap{position:relative;z-index:2;width:100%;max-width:1280px;margin:0 auto;padding:120px 40px 200px}
+.tag{
+  display:inline-block;font-size:11px;letter-spacing:4px;color:#8b5cf6;
+  border:1px solid rgba(139,92,246,0.3);padding:6px 14px;margin-bottom:32px;
+  border-radius:999px;background:#fff;
+  font-weight:600;
+}
+h1{font-size:clamp(48px,10vw,96px);font-weight:800;line-height:1.05;letter-spacing:-3px;color:#0f172a;margin-bottom:16px}
+h1 span{background:linear-gradient(135deg,#8b5cf6,#3b82f6,#ec4899);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.sub{font-size:16px;color:#64748b;margin-bottom:64px;letter-spacing:0.5px}
+.sub b{color:#0f172a;font-weight:700}
+.section-title{font-size:12px;font-weight:700;letter-spacing:4px;color:#94a3b8;text-transform:uppercase;margin:56px 0 20px}
+.links{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:560px){.links{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.links{grid-template-columns:1fr 1fr 1fr}}
+
+.link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 26px;background:#fff;
+  border:1px solid #e5e7eb;border-radius:18px;
+  text-decoration:none;color:#1e293b;
+  transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s,background 0.35s,border-color 0.35s;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 16px rgba(15,23,42,0.04);
+  min-height:80px;outline:none;
+}
+.link:hover{background:#fff;transform:translateY(-4px);box-shadow:0 12px 32px rgba(139,92,246,0.12);border-color:#c4b5fd}
+.link .name{font-size:15px;font-weight:700;color:#0f172a}
+.link .desc{font-size:11px;color:#94a3b8;margin-top:4px}
+.link .arrow{color:#8b5cf6;font-size:18px;font-weight:700;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)}
+.link:hover .arrow{transform:translateX(6px)}
+.link:active{transform:scale(0.97)}
+
+.link.profile{
+  grid-column:1/-1;
+  background:linear-gradient(135deg,#faf5ff,#eff6ff);
+  border-color:#c4b5fd;
+  min-height:100px;
+}
+.link.profile .name{font-size:20px;color:#8b5cf6}
+
+.footer{margin-top:96px;padding-top:36px;border-top:1px solid #e5e7eb;font-size:12px;color:#94a3b8;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer .dot{color:#8b5cf6}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s cubic-bezier(0.22,1,0.36,1),transform 0.8s cubic-bezier(0.22,1,0.36,1);will-change:opacity,transform}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* 公告 */
+.modal-mask{position:fixed;inset:0;background:rgba(15,23,42,0.4);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity 0.35s ease,visibility 0.35s ease}
+.modal-mask.show{opacity:1;visibility:visible}
+.modal{width:100%;max-width:720px;background:#fff;border:1px solid #e5e7eb;border-radius:24px;padding:40px;box-shadow:0 24px 80px rgba(15,23,42,0.2);transform:translateY(20px) scale(0.96);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1)}
+.modal-mask.show .modal{transform:translateY(0) scale(1)}
+.modal h3{margin:0 0 20px;font-size:24px;font-weight:800;color:#0f172a}
+.modal h3 span{background:linear-gradient(135deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.modal p{margin:0 0 16px;font-size:16px;line-height:2.0;color:#475569}
+.modal .actions{margin-top:28px;display:flex;gap:12px}
+.modal .btn{flex:1;padding:16px;border:none;border-radius:14px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);outline:none}
+.modal .btn-primary{background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff}
+.modal .btn-primary:hover{transform:translateY(-2px)}
+.modal .btn-primary:active{transform:scale(0.97)}
+
+.modal-avatar-text{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,#8b5cf6,#3b82f6);
+  color:#fff;font-size:28px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+}
+
+@media(max-width:720px){
+  .float-nav{right:12px;gap:8px}
+  .float-btn{padding:10px 14px;font-size:11px}
+  .wrap{padding:100px 24px 160px}
+  .setting-panel{width:160px;right:16px}
+  .modal{padding:28px;max-width:100%}
+  .modal h3{font-size:20px}
+  .modal p{font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<div class="setting-btn" id="settingBtn" onclick="toggleSetting()">⚙</div>
+
+<div class="setting-panel" id="settingPanel">
+  <div class="item" data-lang="zh" onclick="setLang('zh')">中文</div>
+  <div class="item" data-lang="en" onclick="setLang('en')">English</div>
+  <div class="item" data-lang="ja" onclick="setLang('ja')">日本語</div>
+  <div class="item" data-lang="ko" onclick="setLang('ko')">한국어</div>
+  <div class="item" data-lang="fr" onclick="setLang('fr')">Français</div>
+  <div class="item" data-lang="de" onclick="setLang('de')">Deutsch</div>
+  <div class="item" data-lang="es" onclick="setLang('es')">Español</div>
+  <div class="item" data-lang="ru" onclick="setLang('ru')">Русский</div>
+  <div class="divider"></div>
+  <div class="item" onclick="toggleFloat()">🔘 <span id="floatToggleText">隐藏悬浮窗</span></div>
+</div>
+
+<div class="float-nav" id="floatNav">
+  <a class="float-btn" href="https://github.com/nanci-dev" target="_blank" data-i18n="floatProfile">个人主页（无加速）</a>
+  <a class="float-btn" href="https://github.com/nanci-dev/LiteMask" target="_blank" data-i18n="floatRepo">开源项目（无加速）</a>
+  <a class="float-btn" href="https://github.com/nanci-dev/LiteMask/releases" target="_blank" data-i18n="floatDownload">下载 Release（无加速）</a>
+</div>
+
+<div class="wrap">
+  <div class="tag reveal" data-i18n="tag">// 幻灵终端下载副站</div>
+  <h1 class="reveal">NANCI<br><span data-i18n="appName">幻灵终端</span></h1>
+  <p class="sub reveal">
+    <span data-i18n="role">开发者</span> · <b>南辞</b> · 
+    <span data-i18n="tags">玩机 / 开源 / 幻灵终端</span>
+  </p>
+
+  <div class="section-title reveal" data-i18n="sectionProfile">// 个人主页</div>
+  <div class="links">
+    <a class="link profile reveal" href="https://v.kuaishou.com/KwTy7y95" target="_blank">
+      <div>
+        <div class="name" data-i18n="profileName">南辞的快手个人主页</div>
+        <div class="desc" data-i18n="profileDesc">开发者主页 · 联系方式</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="section-title reveal" data-i18n="sectionDownload">// 下载</div>
+  <div class="links">
+    <a class="link reveal" href="https://gh-proxy.com/https://github.com/nanci-dev/LiteMask/releases" target="_blank">
+      <div>
+        <div class="name" data-i18n="dl3">GitHub 下载幻灵终端（加速）</div>
+        <div class="desc" data-i18n="dl3d">主站 · 无需 VPN</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link reveal" href="https://gh-proxy.com/https://github.com/nanci-dev/LiteMask" target="_blank">
+      <div>
+        <div class="name" data-i18n="dl2">LiteMask 开源项目（加速）</div>
+        <div class="desc" data-i18n="dl2d">无需 VPN · 稳定</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link reveal" href="mailto:3932194646@qq.com">
+      <div>
+        <div class="name" data-i18n="dl4">联系我</div>
+        <div class="desc" data-i18n="dl4d">反馈问题 / 合作</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link reveal" href="https://dl-e.feejii.com/storage/files/2026/09/29/9/5759769/1790693409837969.gz?t=6ac7aa20&rlimit=20&us=AS8RyNm22m&sign=6d7f479323924a4e96080ab01ecb7b98&download_name=%E9%BB%91%E9%A9%AC%E5%8A%A0%E9%80%9F%E5%99%A8_7.8.7.9.apk&p=null-15553876-62898128589" target="_blank">
+      <div>
+        <div class="name" data-i18n="dl5">直连 VPN 下载</div>
+        <div class="desc" data-i18n="dl5d">点击下载 · 无需 VPN</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a class="link reveal" href="https://pan.xunlei.com/s/VP3zPA0qD1FoizPfcoF0e9cXA1?pwd=zffd#" target="_blank">
+      <div>
+        <div class="name" data-i18n="dl6">幻灵直连</div>
+        <div class="desc" data-i18n="dl6d">国内直连 · 迅雷云盘</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="footer reveal">
+    <span><span class="dot">●</span> <span data-i18n="slogan">科技不再是高高在上，而是服务于人民</span></span>
+    <span>© 2026 NANCI</span>
+  </div>
+</div>
+
+<div class="modal-mask" id="notice">
+  <div class="modal">
+    <div class="modal-avatar-text">南</div>
+    <h3>📢 <span data-i18n="noticeTitle">公告</span></h3>
+    <p data-i18n="noticeBody1">已增加加速下载入口，无 VPN 用户可使用加速入口。</p>
+    <p data-i18n="noticeBody2">有 VPN 的用户也可使用无加速入口，速度更快、更稳定。</p>
+    <p data-i18n="noticeBody3">推荐优先使用加速入口，体验更顺畅。</p>
+    <p data-i18n="noticeBody4">当前为幻灵终端下载副站，考虑到用户没有 VPN，所以开发了副站。目前只提供源码，不提供 APK，后续版本可能会提供，请大家遵守开源协议。</p>
+    <p data-i18n="noticeBody5">南辞的 QQ：3136806069，欢迎大家提供意见。也可以关注南辞的快手主页，获取最新动态。</p>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="closeNotice()" data-i18n="noticeOk">我知道了</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var i18n={
+zh:{
+  tag:"// 幻灵终端下载副站",
+  appName:"幻灵终端",
+  role:"开发者",
+  tags:"玩机 / 开源 / 幻灵终端",
+  sectionProfile:"// 个人主页",
+  profileName:"南辞的快手个人主页",
+  profileDesc:"开发者主页 · 联系方式",
+  sectionDownload:"// 下载",
+  dl2:"LiteMask 开源项目（加速）",
+  dl2d:"无需 VPN · 稳定",
+  dl3:"GitHub 下载幻灵终端（加速）",
+  dl3d:"主站 · 无需 VPN",
+  dl4:"联系我",
+  dl4d:"反馈问题 / 合作",
+  dl5:"直连 VPN 下载",
+  dl5d:"点击下载 · 无需 VPN",
+  dl6:"幻灵直连",
+  dl6d:"国内直连 · 迅雷云盘",
+  slogan:"科技不再是高高在上，而是服务于人民",
+  floatProfile:"个人主页（无加速）",
+  floatRepo:"开源项目（无加速）",
+  floatDownload:"下载 Release（无加速）",
+  noticeTitle:"公告",
+  noticeBody1:"已增加加速下载入口，无 VPN 用户可使用加速入口。",
+  noticeBody2:"有 VPN 的用户也可使用无加速入口，速度更快、更稳定。",
+  noticeBody3:"推荐优先使用加速入口，体验更顺畅。",
+  noticeBody4:"当前为幻灵终端下载副站，考虑到用户没有 VPN，所以开发了副站。目前只提供源码，不提供 APK，后续版本可能会提供，请大家遵守开源协议。",
+  noticeBody5:"南辞的 QQ：3136806069，欢迎大家提供意见。也可以关注南辞的快手主页，获取最新动态。",
+  noticeOk:"我知道了",
+  hideFloat:"隐藏悬浮窗",
+  showFloat:"显示悬浮窗"
+},
+en:{
+  tag:"// LiteMask Download Mirror",
+  appName:"LiteMask",
+  role:"Developer",
+  tags:"Modding / Open Source / LiteMask",
+  sectionProfile:"// PROFILE",
+  profileName:"Nanci's Kuaishou",
+  profileDesc:"Developer homepage · Contact",
+  sectionDownload:"// DOWNLOAD",
+  dl2:"LiteMask Open Source (Proxy)",
+  dl2d:"No VPN needed · Stable",
+  dl3:"GitHub Download LiteMask (Proxy)",
+  dl3d:"Main site · No VPN needed",
+  dl4:"Contact Me",
+  dl4d:"Feedback / Collaboration",
+  dl5:"Direct VPN Download",
+  dl5d:"Click to download · No VPN needed",
+  dl6:"LiteMask Direct",
+  dl6d:"Direct in China · Xunlei Drive",
+  slogan:"Technology is no longer above the people, but serves the people",
+  floatProfile:"Profile (No Proxy)",
+  floatRepo:"Repo (No Proxy)",
+  floatDownload:"Release (No Proxy)",
+  noticeTitle:"Notice",
+  noticeBody1:"A proxy download entry has been added. Users without VPN can use the proxy entry.",
+  noticeBody2:"Users with VPN can also use the non-proxy entry for faster and more stable speeds.",
+  noticeBody3:"It is recommended to use the proxy entry first for a smoother experience.",
+  noticeBody4:"This is the LiteMask download mirror. It was built for users without VPN. Only source code is provided for now, APK may come later. Please follow the open source license.",
+  noticeBody5:"Nanci's QQ: 3136806069. Feedback welcome. You can also follow Nanci's Kuaishou for updates.",
+  noticeOk:"Got it",
+  hideFloat:"Hide floating buttons",
+  showFloat:"Show floating buttons"
+}
+};
+
+var currentLang = localStorage.getItem('litemask-lang') || 'zh';
+
+function setLang(lang){
+  currentLang = lang;
+  var dict=i18n[lang]||i18n.zh;
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key=el.getAttribute('data-i18n');
+    if(dict[key])el.textContent=dict[key];
+  });
+  document.querySelectorAll('.setting-panel .item').forEach(function(it){
+    var l=it.getAttribute('data-lang');
+    if(l) it.classList.toggle('active', l === lang);
+  });
+  document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : lang;
+  localStorage.setItem('litemask-lang', lang);
+  updateFloatText();
+}
+
+function toggleSetting(){
+  var p=document.getElementById('settingPanel');
+  var b=document.getElementById('settingBtn');
+  p.classList.toggle('show');
+  b.classList.toggle('spin');
+}
+
+function toggleFloat(){
+  var nav=document.getElementById('floatNav');
+  nav.classList.toggle('hidden');
+  updateFloatText();
+}
+
+function updateFloatText(){
+  var nav=document.getElementById('floatNav');
+  var t=document.getElementById('floatToggleText');
+  var d=i18n[currentLang]||i18n.zh;
+  t.textContent = nav.classList.contains('hidden') ? d.showFloat : d.hideFloat;
+}
+
+function showNoticeIfNeeded(){
+  setTimeout(function(){
+    document.getElementById('notice').classList.add('show');
+  }, 600);
+}
+function closeNotice(){
+  document.getElementById('notice').classList.remove('show');
+}
+
+setLang(currentLang);
+showNoticeIfNeeded();
+
+var reveals=document.querySelectorAll('.reveal');
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+  });
+},{threshold:0.12,rootMargin:'0px 0px -6% 0px'});
+reveals.forEach(function(el){io.observe(el)});
+</script>
+</body>
+</html>
