@@ -15,28 +15,35 @@ body{
   -webkit-font-smoothing:antialiased;
   transition:background 0.4s ease,color 0.4s ease;
 }
-body.dark{
-  background:#0d0d12;
-  color:#e2e8f0;
-}
+body.dark{background:#0d0d12;color:#e2e8f0}
 
-/* 顶部滚动公告条 */
+/* 背景光晕 */
+body::before{
+  content:"";position:fixed;top:-30%;left:-10%;width:80vmax;height:80vmax;
+  background:radial-gradient(circle,rgba(0,122,255,0.12) 0%,transparent 60%);
+  border-radius:50%;pointer-events:none;z-index:0;
+  animation:float1 18s ease-in-out infinite;
+}
+body::after{
+  content:"";position:fixed;bottom:-30%;right:-10%;width:80vmax;height:80vmax;
+  background:radial-gradient(circle,rgba(52,199,89,0.1) 0%,transparent 60%);
+  border-radius:50%;pointer-events:none;z-index:0;
+  animation:float2 20s ease-in-out infinite;
+}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,80px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,-60px)}}
+
+/* 顶部滚动公告 */
 .top-bar{
   position:fixed;top:0;left:0;right:0;height:36px;
   background:linear-gradient(90deg,#007aff,#34c759,#ff9500);
   color:#fff;font-size:12px;font-weight:600;
-  display:flex;align-items:center;overflow:hidden;
-  z-index:50;
+  display:flex;align-items:center;overflow:hidden;z-index:50;
 }
 .top-bar .scroll{
-  white-space:nowrap;
-  animation:scrollText 20s linear infinite;
-  padding-left:100%;
+  white-space:nowrap;animation:scrollText 20s linear infinite;padding-left:100%;
 }
-@keyframes scrollText{
-  0%{transform:translateX(0)}
-  100%{transform:translateX(-100%)}
-}
+@keyframes scrollText{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 
 .setting-btn{
   position:fixed;top:52px;right:24px;z-index:30;width:44px;height:44px;border-radius:50%;
@@ -93,8 +100,7 @@ body.dark .float-btn{background:rgba(30,30,40,0.85);color:#94a3b8;border-color:r
 .tag{
   display:inline-block;font-size:11px;letter-spacing:4px;color:#007aff;
   border:1px solid rgba(0,122,255,0.3);padding:6px 14px;margin-bottom:32px;
-  border-radius:999px;background:rgba(255,255,255,0.8);
-  font-weight:600;
+  border-radius:999px;background:rgba(255,255,255,0.8);font-weight:600;
 }
 body.dark .tag{background:rgba(30,30,40,0.8);color:#60a5fa;border-color:rgba(96,165,250,0.3)}
 h1{font-size:clamp(48px,10vw,96px);font-weight:800;line-height:1.05;letter-spacing:-3px;color:#1c1c1e;margin-bottom:16px}
@@ -107,8 +113,7 @@ body.dark .sub b{color:#fff}
 .search-wrap{max-width:520px;margin-bottom:56px;position:relative}
 .search-wrap input{
   width:100%;padding:14px 20px 14px 48px;border-radius:16px;
-  border:1px solid rgba(0,0,0,0.06);
-  background:rgba(255,255,255,0.9);
+  border:1px solid rgba(0,0,0,0.06);background:rgba(255,255,255,0.9);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   font-family:inherit;font-size:15px;color:#1c1c1e;outline:none;
   box-shadow:0 4px 16px rgba(0,0,0,0.04);
@@ -131,16 +136,14 @@ body.dark .search-wrap input{background:rgba(30,30,40,0.8);color:#fff;border-col
   transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s,background 0.35s,border-color 0.35s;
   position:relative;overflow:hidden;
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  box-shadow:0 4px 16px rgba(0,0,0,0.04);
-  min-height:80px;outline:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.04);min-height:80px;outline:none;
 }
 body.dark .link{background:rgba(30,30,40,0.8);color:#e2e8f0;border-color:rgba(255,255,255,0.06)}
 .link:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,122,255,0.15);border-color:#a8c7fa}
 .link::before{
   content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;
   background:linear-gradient(90deg,transparent,rgba(0,122,255,0.08),transparent);
-  transition:left 0.6s ease;
-  pointer-events:none;
+  transition:left 0.6s ease;pointer-events:none;
 }
 .link:hover::before{left:100%}
 .link .name{font-size:15px;font-weight:700;color:#1c1c1e;position:relative;z-index:1}
@@ -153,32 +156,13 @@ body.dark .link .name{color:#fff}
 .link.profile{
   grid-column:1/-1;
   background:linear-gradient(135deg,rgba(0,122,255,0.1),rgba(52,199,89,0.08));
-  border-color:rgba(0,122,255,0.3);
-  min-height:100px;
+  border-color:rgba(0,122,255,0.3);min-height:100px;
 }
 body.dark .link.profile{background:linear-gradient(135deg,rgba(0,122,255,0.15),rgba(52,199,89,0.1))}
 .link.profile .name{font-size:20px;color:#007aff}
 
-/* 下载进度条 */
-.progress-bar{
-  position:fixed;top:36px;left:0;right:0;height:3px;
-  background:rgba(0,122,255,0.1);
-  z-index:60;overflow:hidden;
-  opacity:0;transition:opacity 0.3s;
-}
-.progress-bar.show{opacity:1}
-.progress-bar .fill{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,#007aff,#34c759);
-  transition:width 0.4s ease;
-}
-
 /* 社交栏 */
-.social-bar{
-  display:flex;justify-content:center;gap:16px;
-  margin-top:48px;
-  flex-wrap:wrap;
-}
+.social-bar{display:flex;justify-content:center;gap:16px;margin-top:48px;flex-wrap:wrap}
 .social-link{
   display:flex;align-items:center;gap:8px;
   padding:12px 20px;border-radius:14px;
@@ -191,6 +175,47 @@ body.dark .link.profile{background:linear-gradient(135deg,rgba(0,122,255,0.15),r
 }
 body.dark .social-link{background:rgba(30,30,40,0.8);color:#e2e8f0;border-color:rgba(255,255,255,0.06)}
 .social-link:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,122,255,0.15)}
+.social-link svg{width:18px;height:18px;display:block}
+
+/* 留言板 */
+.comment-box{
+  max-width:720px;margin:48px auto 0;
+  background:rgba(255,255,255,0.9);
+  border:1px solid rgba(0,0,0,0.05);
+  border-radius:20px;padding:28px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.04);
+}
+body.dark .comment-box{background:rgba(30,30,40,0.8);border-color:rgba(255,255,255,0.06)}
+.comment-box h4{font-size:16px;font-weight:700;margin-bottom:16px}
+.comment-box input,.comment-box textarea{
+  width:100%;padding:12px 16px;border-radius:12px;
+  border:1px solid rgba(0,0,0,0.08);
+  background:rgba(255,255,255,0.8);
+  font-family:inherit;font-size:14px;color:#1c1c1e;
+  outline:none;margin-bottom:12px;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+body.dark .comment-box input,body.dark .comment-box textarea{
+  background:rgba(20,20,28,0.8);color:#fff;border-color:rgba(255,255,255,0.08);
+}
+.comment-box input:focus,.comment-box textarea:focus{border-color:#a8c7fa;box-shadow:0 0 0 3px rgba(0,122,255,0.1)}
+.comment-box textarea{min-height:80px;resize:vertical}
+.comment-box button{
+  padding:12px 24px;border:none;border-radius:12px;
+  background:#007aff;color:#fff;font-family:inherit;
+  font-size:14px;font-weight:700;cursor:pointer;
+  transition:background 0.2s,transform 0.2s;
+}
+.comment-box button:hover{background:#0066d6}
+.comment-box button:active{transform:scale(0.97)}
+.comment-list{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.comment-item{
+  padding:14px 16px;border-radius:12px;
+  background:rgba(0,122,255,0.06);
+  font-size:13px;color:#1c1c1e;line-height:1.6;
+}
+body.dark .comment-item{background:rgba(96,165,250,0.1);color:#e2e8f0}
+.comment-item .meta{font-size:11px;color:#8e8e93;margin-bottom:4px}
 
 .footer{margin-top:64px;padding-top:36px;border-top:1px solid rgba(0,0,0,0.06);font-size:12px;color:#8e8e93;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .footer .dot{color:#007aff}
@@ -206,8 +231,7 @@ body.dark .social-link{background:rgba(30,30,40,0.8);color:#e2e8f0;border-color:
   color:#007aff;font-size:20px;cursor:pointer;
   box-shadow:0 8px 24px rgba(0,0,0,0.1);
   opacity:0;visibility:hidden;transform:translateY(20px);
-  transition:opacity 0.35s,visibility 0.35s,transform 0.35s,box-shadow 0.3s;
-  outline:none;
+  transition:opacity 0.35s,visibility 0.35s,transform 0.35s,box-shadow 0.3s;outline:none;
 }
 body.dark .back-top{background:rgba(30,30,40,0.9)}
 .back-top.show{opacity:1;visibility:visible;transform:translateY(0)}
@@ -244,14 +268,8 @@ body.dark .modal .btn-ghost{background:rgba(255,255,255,0.08);color:#e2e8f0}
 </head>
 <body>
 
-<!-- 顶部滚动公告 -->
 <div class="top-bar">
   <div class="scroll">📢 幻灵终端主站已上线 · 支持加速下载 · 关注南辞快手获取最新动态 · 欢迎提交反馈 · 科技为人民服务</div>
-</div>
-
-<!-- 下载进度条 -->
-<div class="progress-bar" id="progressBar">
-  <div class="fill" id="progressFill"></div>
 </div>
 
 <div class="setting-btn" id="settingBtn" onclick="toggleSetting()">⚙</div>
@@ -333,12 +351,33 @@ body.dark .modal .btn-ghost{background:rgba(255,255,255,0.08);color:#e2e8f0}
     </a>
   </div>
 
-  <!-- 社交栏 -->
+  <!-- 社交栏：真实 SVG 图标 -->
   <div class="social-bar reveal">
-    <a class="social-link" href="https://v.kuaishou.com/KwTy7y95" target="_blank">🎬 快手</a>
-    <a class="social-link" href="https://github.com/nanci-dev" target="_blank">🐙 GitHub</a>
-    <a class="social-link" href="mailto:3932194646@qq.com">📧 邮箱</a>
-    <a class="social-link" href="https://qm.qq.com/q/3136806069" target="_blank">💬 QQ</a>
+    <a class="social-link" href="https://v.kuaishou.com/KwTy7y95" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12l3 3 5-6"/></svg>
+      快手
+    </a>
+    <a class="social-link" href="https://github.com/nanci-dev" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.6-1.3-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.7 1.2 3.4.9.1-.7.4-1.2.7-1.5-2.5-.3-5.2-1.3-5.2-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2 1-.3 2-.4 3-.4s2 .1 3 .4c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.2 5.7.4.3.8 1 .8 2v3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.65 18.35.5 12 .5z"/></svg>
+      GitHub
+    </a>
+    <a class="social-link" href="mailto:3932194646@qq.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+      邮箱
+    </a>
+    <a class="social-link" href="https://qm.qq.com/q/3136806069" target="_blank">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 0 0-9 9v6a3 3 0 0 0 3 3h1l1 2h8l1-2h1a3 3 0 0 0 3-3v-6a9 9 0 0 0-9-9z"/><circle cx="9" cy="11" r="1"/><circle cx="15" cy="11" r="1"/></svg>
+      QQ
+    </a>
+  </div>
+
+  <!-- 留言板 -->
+  <div class="comment-box reveal">
+    <h4 data-i18n="commentTitle">💬 留言板</h4>
+    <input type="text" id="commentName" placeholder="你的名字（可选）" maxlength="20">
+    <textarea id="commentText" placeholder="写下你的留言..." maxlength="200"></textarea>
+    <button onclick="addComment()" data-i18n="commentSubmit">发布留言</button>
+    <div class="comment-list" id="commentList"></div>
   </div>
 
   <div class="footer reveal">
@@ -358,7 +397,7 @@ body.dark .modal .btn-ghost{background:rgba(255,255,255,0.08);color:#e2e8f0}
     <p data-i18n="noticeBody4">当前为幻灵终端下载主站，目前只提供源码，不提供 APK，后续版本可能会提供，请大家遵守开源协议。</p>
     <p data-i18n="noticeBody5">南辞的 QQ：3136806069，欢迎大家提供意见。也可以关注南辞的快手主页，获取最新动态。</p>
     <div class="actions">
-      <button class="btn btn-ghost" onclick="closeNotice()" data-i18n="noticeDismiss">不再提示</button>
+      <button class="btn btn-ghost" onclick="dismissNotice()" data-i18n="noticeDismiss">不再提示</button>
       <button class="btn btn-primary" onclick="closeNotice()" data-i18n="noticeOk">我知道了</button>
     </div>
   </div>
@@ -401,7 +440,9 @@ zh:{
   showFloat:"显示悬浮窗",
   searchPlaceholder:"搜索功能...",
   darkMode:"深色模式",
-  lightMode:"浅色模式"
+  lightMode:"浅色模式",
+  commentTitle:"💬 留言板",
+  commentSubmit:"发布留言"
 },
 en:{
   tag:"// LiteMask Download Main",
@@ -438,7 +479,9 @@ en:{
   showFloat:"Show floating buttons",
   searchPlaceholder:"Search...",
   darkMode:"Dark mode",
-  lightMode:"Light mode"
+  lightMode:"Light mode",
+  commentTitle:"💬 Comments",
+  commentSubmit:"Post Comment"
 }
 };
 
@@ -483,7 +526,6 @@ function updateFloatText(){
   t.textContent = nav.classList.contains('hidden') ? d.showFloat : d.hideFloat;
 }
 
-/* 深色模式 */
 function toggleDark(){
   document.body.classList.toggle('dark');
   var isDark = document.body.classList.contains('dark');
@@ -500,7 +542,6 @@ if(localStorage.getItem('litemask-dark') === '1'){
   document.body.classList.add('dark');
 }
 
-/* 搜索 */
 function filterLinks(keyword){
   keyword = keyword.toLowerCase().trim();
   document.querySelectorAll('.link').forEach(function(el){
@@ -509,7 +550,6 @@ function filterLinks(keyword){
   });
 }
 
-/* 回到顶部 */
 function scrollToTop(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -519,7 +559,6 @@ window.addEventListener('scroll',function(){
   else btn.classList.remove('show');
 });
 
-/* 公告 */
 function showNoticeIfNeeded(){
   if(localStorage.getItem('litemask-notice-dismissed') === '1') return;
   setTimeout(function(){
@@ -528,13 +567,45 @@ function showNoticeIfNeeded(){
 }
 function closeNotice(){
   document.getElementById('notice').classList.remove('show');
-  if(event && event.target && event.target.getAttribute('data-i18n') === 'noticeDismiss'){
-    localStorage.setItem('litemask-notice-dismissed', '1');
-  }
+}
+function dismissNotice(){
+  document.getElementById('notice').classList.remove('show');
+  localStorage.setItem('litemask-notice-dismissed', '1');
+}
+
+/* 留言板 */
+function loadComments(){
+  var list = document.getElementById('commentList');
+  var data = JSON.parse(localStorage.getItem('litemask-comments') || '[]');
+  list.innerHTML = '';
+  data.slice().reverse().forEach(function(c){
+    var div = document.createElement('div');
+    div.className = 'comment-item';
+    div.innerHTML = '<div class="meta">' + c.name + ' · ' + c.time + '</div>' + escapeHtml(c.text);
+    list.appendChild(div);
+  });
+}
+function escapeHtml(str){
+  return str.replace(/[&<>"']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+function addComment(){
+  var name = document.getElementById('commentName').value.trim() || '匿名';
+  var text = document.getElementById('commentText').value.trim();
+  if(!text) return;
+  var data = JSON.parse(localStorage.getItem('litemask-comments') || '[]');
+  var now = new Date();
+  var time = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  data.push({name:name, text:text, time:time});
+  localStorage.setItem('litemask-comments', JSON.stringify(data));
+  document.getElementById('commentText').value = '';
+  loadComments();
 }
 
 setLang(currentLang);
 showNoticeIfNeeded();
+loadComments();
 
 var reveals=document.querySelectorAll('.reveal');
 var io=new IntersectionObserver(function(entries){
@@ -545,4 +616,4 @@ var io=new IntersectionObserver(function(entries){
 reveals.forEach(function(el){io.observe(el)});
 </script>
 </body>
-  </html>
+</html>
