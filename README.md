@@ -1,14 +1,28 @@
 # 幻灵终端 · 主站
 
+<!-- 平台与仓库 -->
 [![GitHub](https://img.shields.io/badge/GitHub-nanci--dev-181717?style=for-the-badge&logo=github)](https://github.com/nanci-dev)
-[![仓库](https://img.shields.io/badge/仓库-nanci--site-181717?style=for-the-badge&logo=github)](https://github.com/nanci-dev/nanci-site)
+[![主站仓库](https://img.shields.io/badge/主站仓库-nanci--site-181717?style=for-the-badge&logo=github)](https://github.com/nanci-dev/nanci-site)
+[![App 仓库](https://img.shields.io/badge/App仓库-LiteMask-181717?style=for-the-badge&logo=github)](https://github.com/nanci-dev/LiteMask)
 [![主站](https://img.shields.io/badge/主站-GitHub%20Pages-181717?style=for-the-badge&logo=githubpages)](https://nanci-dev.github.io/nanci-site/)
 [![副站](https://img.shields.io/badge/副站-帽子云-181717?style=for-the-badge&logo=cloudflare)](https://hl-35jf377.maozi.io)
-[![App 仓库](https://img.shields.io/badge/App-LiteMask-181717?style=for-the-badge&logo=github)](https://github.com/nanci-dev/LiteMask)
+
+<!-- 下载与版本 -->
 [![下载](https://img.shields.io/badge/下载-Releases-238636?style=for-the-badge&logo=github)](https://github.com/nanci-dev/LiteMask/releases)
+[![版本](https://img.shields.io/badge/版本-v1.0-007AFF?style=for-the-badge)](https://github.com/nanci-dev/LiteMask/releases)
+[![Stars](https://img.shields.io/github/stars/nanci-dev/nanci-site?style=for-the-badge&logo=github&color=181717)](https://github.com/nanci-dev/nanci-site/stargazers)
+[![Forks](https://img.shields.io/github/forks/nanci-dev/nanci-site?style=for-the-badge&logo=github&color=181717)](https://github.com/nanci-dev/nanci-site/network/members)
+
+<!-- 语言与协议 -->
+[![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://github.com/nanci-dev/LiteMask)
+[![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://github.com/nanci-dev/nanci-site)
+[![License](https://img.shields.io/badge/许可证-MIT-181717?style=for-the-badge)](https://github.com/nanci-dev/nanci-site/blob/main/LICENSE)
+[![Platform](https://img.shields.io/badge/平台-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/nanci-dev/LiteMask)
+
+<!-- 社交与联系 -->
 [![快手](https://img.shields.io/badge/快手-南辞-FF4906?style=for-the-badge&logo=kuaishou&logoColor=white)](https://v.kuaishou.com/KwTy7y95)
 [![QQ](https://img.shields.io/badge/QQ-加好友-12B7F5?style=for-the-badge&logo=tencentqq&logoColor=white)](https://qm.qq.com/q/kMXbU7qvK2)
-[![License](https://img.shields.io/badge/许可证-MIT-181717?style=for-the-badge)](https://github.com/nanci-dev/nanci-site/blob/main/LICENSE)
+[![邮箱](https://img.shields.io/badge/邮箱-3932194646@qq.com-181717?style=for-the-badge&logo=gmail&logoColor=white)](mailto:3932194646@qq.com)
 
 ---
 
@@ -47,6 +61,7 @@
 - GitHub：https://github.com/nanci-dev
 - 快手：https://v.kuaishou.com/KwTy7y95
 - QQ：3136806069
+- 邮箱：3932194646@qq.com
 
 ## 致谢
 
