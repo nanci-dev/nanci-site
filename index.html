@@ -2,18 +2,18 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>幻灵终端 (LiteMask) - 官方主页</title>
     <style>
         :root {
             --bg: #0d1117;
-            --bg-card: #161b22;
-            --border: #30363d;
             --text: #c9d1d9;
-            --text-bright: #f0f6fc;
+            --text-title: #f0f6fc;
+            --border: #30363d;
             --link: #58a6ff;
-            --btn-bg: #21262d;
-            --btn-hover: #30363d;
+            --code-bg: #161b22;
+            --notice-border: #f0883e;
+            --notice-bg: #21262d;
         }
         * {
             box-sizing: border-box;
@@ -25,116 +25,188 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.6;
-            padding: 20px 16px;
-            max-width: 860px;
+            line-height: 1.5;
+            padding: 24px 16px;
+            max-width: 880px;
             margin: 0 auto;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .header h1 {
-            font-size: 28px;
-            color: var(--text-bright);
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-        .header p {
             font-size: 16px;
+        }
+        /* 排版核心：游龙那种全部居中的风格 */
+        .center-block {
+            text-align: center;
+        }
+        h1 {
+            font-size: 32px;
+            color: var(--text-title);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .sub-title {
+            font-size: 18px;
             color: var(--text);
+            margin-bottom: 4px;
+        }
+        .sub-en {
+            font-size: 14px;
+            color: #8b949e;
             margin-bottom: 16px;
         }
-        /* 徽章区域 */
-        .badges {
+        .desc {
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 24px;
+            text-align: left; /* 简介保持左对齐更易读 */
+        }
+        /* 区块标题 */
+        .block-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-title);
+            margin: 24px 0 12px;
+            text-align: center;
+        }
+        /* 徽章和图标容器 */
+        .badges-row {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
-        .badges a {
+        .badges-row a {
             display: inline-block;
-            transition: transform 0.2s ease, opacity 0.2s ease;
+            transition: transform 0.2s;
         }
-        .badges a:active {
+        .badges-row a:active {
             transform: scale(0.92);
-            opacity: 0.8;
         }
-        .badges img {
+        .badges-row img {
             height: 20px;
             border-radius: 4px;
             display: block;
         }
-        /* 快速跳转按钮组 */
+        /* 技术栈大图标 */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .tech-stack a {
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .tech-stack a:active {
+            transform: scale(0.92);
+        }
+        .tech-stack img {
+            height: 28px;
+            border-radius: 4px;
+            display: block;
+        }
+        /* 快速跳转按钮（游龙那个彩色的方块按钮） */
         .quick-jump {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
         .quick-jump a {
             display: inline-block;
-            padding: 6px 14px;
-            background: var(--btn-bg);
-            border: 1px solid var(--border);
+            padding: 4px 12px;
             border-radius: 6px;
-            color: var(--text-bright);
+            color: #fff;
             text-decoration: none;
-            font-size: 14px;
-            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            transition: opacity 0.2s;
         }
         .quick-jump a:active {
-            background: var(--btn-hover);
-            transform: scale(0.96);
+            opacity: 0.8;
         }
+        /* 按钮颜色 (对标游龙图里的颜色) */
+        .btn-blue { background-color: #1f6feb; }
+        .btn-green { background-color: #238636; }
+        .btn-orange { background-color: #d29922; }
+        .btn-purple { background-color: #8957e5; }
+        .btn-red { background-color: #da3633; }
+
+        /* 正文区块 */
         .section {
             margin-bottom: 24px;
         }
         .section h2 {
             font-size: 20px;
-            color: var(--text-bright);
-            margin-bottom: 12px;
+            color: var(--text-title);
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .section p, .section li {
+            font-size: 15px;
+            color: var(--text);
         }
         .section ul {
-            padding-left: 20px;
+            padding-left: 24px;
         }
-        .section ul li {
-            margin-bottom: 8px;
-            font-size: 15px;
+        .section li {
+            margin-bottom: 6px;
         }
-        /* 声明框 */
+        /* 警告声明框（游龙那个橙色边框） */
         .notice-box {
-            background-color: #21262d;
-            border: 1px solid var(--border);
-            border-left: 4px solid #f0883e;
+            background-color: var(--notice-bg);
+            border-left: 4px solid var(--notice-border);
             border-radius: 6px;
             padding: 16px;
             margin-bottom: 24px;
         }
         .notice-box h3 {
             font-size: 18px;
-            color: var(--text-bright);
-            margin-bottom: 8px;
+            color: var(--text-title);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .notice-box h3::before {
+            content: "⚠️";
+            margin-right: 8px;
+            font-size: 20px;
         }
         .notice-box ul {
             padding-left: 20px;
             font-size: 14px;
         }
         .notice-box li {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            color: var(--text);
         }
-        /* 表格样式 */
+        /* 代码块和表格 */
+        pre {
+            background-color: var(--code-bg);
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.45;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        code {
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            background-color: rgba(110,118,129,0.4);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 85%;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
-            margin-top: 10px;
+            margin-bottom: 16px;
         }
         th, td {
             padding: 8px 12px;
@@ -142,8 +214,8 @@
             text-align: left;
         }
         th {
-            background-color: #161b22;
-            color: var(--text-bright);
+            background-color: var(--code-bg);
+            color: var(--text-title);
             font-weight: 600;
         }
         a {
@@ -153,6 +225,7 @@
         a:hover {
             text-decoration: underline;
         }
+        /* 页脚 */
         .footer {
             text-align: center;
             font-size: 13px;
@@ -161,88 +234,74 @@
             padding-top: 16px;
             border-top: 1px solid var(--border);
         }
-        .footer a {
-            color: #8b949e;
-        }
-        /* 技术栈图标区（已替换为真实徽章图片） */
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 16px;
-        }
-        .tech-stack a {
-            display: inline-block;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-        .tech-stack a:active {
-            transform: scale(0.92);
-            opacity: 0.8;
-        }
-        .tech-stack img {
-            height: 28px; /* 徽章图片的高度，大小适中 */
-            border-radius: 4px;
-            display: block;
-        }
     </style>
 </head>
 <body>
 
-    <!-- 顶部标题区 -->
-    <div class="header">
+    <!-- 顶部区域：完全复刻游龙排版 -->
+    <div class="center-block">
         <h1>幻灵终端 (LiteMask)</h1>
-        <p>轻量级 Android 代码运行与文件管理工具</p>
-        
-        <!-- 顶部徽章（已全部加上链接，可点击） -->
-        <div class="badges">
-            <a href="https://github.com/nanci-dev/LiteMask/issues" target="_blank">
-                <img src="https://img.shields.io/badge/状态-持续开发中-brightgreen.svg" alt="状态">
-            </a>
-            <a href="https://github.com/nanci-dev/LiteMask/blob/main/LICENSE" target="_blank">
-                <img src="https://img.shields.io/badge/许可-MIT-blue.svg" alt="许可">
-            </a>
-            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
-                <img src="https://img.shields.io/badge/Java-100%25-orange.svg" alt="语言">
-            </a>
-            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
-                <img src="https://img.shields.io/badge/AIDE-Pro-red.svg" alt="构建工具">
-            </a>
-            <a href="https://developer.android.com" target="_blank">
-                <img src="https://img.shields.io/badge/Min%20SDK-API%2026-green.svg" alt="Min SDK">
-            </a>
-            <a href="https://github.com/nanci-dev/LiteMask/pulls" target="_blank">
-                <img src="https://img.shields.io/badge/PRs-welcome-blueviolet.svg" alt="PRs">
-            </a>
+        <div class="sub-title">轻量级 Android 代码运行与文件管理工具</div>
+        <div class="sub-en">An open-source & forever-free Android code runner toolkit — no root required.</div>
+        <div class="desc">
+            混合架构单包 APK：原生 Java + Android SDK，<strong>源码级内置液态玻璃 UI 与本地 Java 代码执行环境</strong>，不依赖任何外部 App，即可完成代码编辑与本地运行。
         </div>
         
-        <!-- 快速跳转按钮 -->
+        <!-- 区块1：项目状态 · 许可 -->
+        <div class="block-title">项目状态 · 许可</div>
+        <div class="badges-row">
+            <a href="https://github.com/nanci-dev/LiteMask/issues" target="_blank"><img src="https://img.shields.io/badge/状态-开发中-brightgreen.svg" alt="状态"></a>
+            <a href="https://github.com/nanci-dev/LiteMask/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/许可-MIT-blue.svg" alt="许可"></a>
+            <a href="https://github.com/nanci-dev/LiteMask/stargazers" target="_blank"><img src="https://img.shields.io/badge/stars-0-brightgreen.svg" alt="stars"></a>
+            <a href="https://github.com/nanci-dev/LiteMask/network/members" target="_blank"><img src="https://img.shields.io/badge/forks-0-blue.svg" alt="forks"></a>
+            <a href="https://github.com/nanci-dev/LiteMask/issues" target="_blank"><img src="https://img.shields.io/badge/issues-0%20open-orange.svg" alt="issues"></a>
+            <a href="https://github.com/nanci-dev/LiteMask/pulls" target="_blank"><img src="https://img.shields.io/badge/PRs-welcome-blueviolet.svg" alt="PRs"></a>
+        </div>
+
+        <!-- 区块2：构建环境 -->
+        <div class="block-title">构建环境</div>
+        <div class="badges-row">
+            <a href="https://www.java.com" target="_blank"><img src="https://img.shields.io/badge/Java-100%25-orange.svg" alt="Java"></a>
+            <a href="https://developer.android.com" target="_blank"><img src="https://img.shields.io/badge/minSdk-26%20(Android%208.0)-green.svg" alt="minSdk"></a>
+            <a href="https://www.android.com" target="_blank"><img src="https://img.shields.io/badge/Platform-Android-brightgreen.svg" alt="Platform"></a>
+            <a href="https://github.com/nanci-dev/LiteMask" target="_blank"><img src="https://img.shields.io/badge/AIDE-Pro-red.svg" alt="AIDE Pro"></a>
+        </div>
+
+        <!-- 区块3：技术栈（真实图标，非 Emoji） -->
+        <div class="block-title">技术栈</div>
+        <div class="tech-stack">
+            <a href="https://www.java.com" target="_blank"><img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java"></a>
+            <a href="https://developer.android.com" target="_blank"><img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android"></a>
+            <a href="https://github.com/nanci-dev/LiteMask" target="_blank"><img src="https://img.shields.io/badge/AIDE_Pro-FF5722?style=for-the-badge&logo=androidstudio&logoColor=white" alt="AIDE Pro"></a>
+            <a href="https://github.com/nanci-dev/LiteMask" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+        </div>
+
+        <!-- 区块4：快速跳转（游龙那种彩色按钮） -->
+        <div class="block-title">快速跳转</div>
         <div class="quick-jump">
-            <a href="#intro">项目简介</a>
-            <a href="#status">开发状态</a>
-            <a href="#env">构建环境</a>
-            <a href="#notice">重要声明</a>
-            <a href="#links">相关链接</a>
+            <a href="#intro" class="btn-blue">项目简介</a>
+            <a href="#status" class="btn-green">开发状态</a>
+            <a href="#env" class="btn-orange">构建环境</a>
+            <a href="#notice" class="btn-red">重要声明</a>
+            <a href="#links" class="btn-purple">相关链接</a>
         </div>
     </div>
 
-    <!-- 项目简介 -->
+    <!-- 正文区域 -->
     <div class="section" id="intro">
         <h2>项目简介</h2>
         <p>“幻灵终端”是一款面向 Android 平台的轻量级代码编辑器与文件管理工具。内置 Java 代码运行环境，支持纯本地编译与输出，配备了全新的“液态玻璃”风格 UI。本项目完全开源、免费，不依赖任何外部 App。</p>
     </div>
 
-    <!-- 开发状态 -->
     <div class="section" id="status">
         <h2>开发状态</h2>
         <ul>
-            <li>当前版本：<strong>v1.0.0（正式版）</strong></li>
-            <li>核心功能：代码编辑器、文件管理、液态玻璃 UI 参数调节均已实现</li>
-            <li>更新频率：随缘更新，欢迎在 Issues 提交反馈</li>
+            <li><strong>当前版本</strong>：v1.0.0（正式版）</li>
+            <li><strong>核心功能</strong>：代码编辑器、文件管理、液态玻璃 UI 参数调节均已实现</li>
+            <li><strong>更新频率</strong>：随缘更新，欢迎在 Issues 提交反馈</li>
         </ul>
     </div>
 
-    <!-- 构建环境 -->
     <div class="section" id="env">
         <h2>构建环境</h2>
         <table>
@@ -253,36 +312,43 @@
             <tr><td>主题</td><td>Theme.Material.NoActionBar</td></tr>
             <tr><td>外部依赖</td><td>原生 SDK，无第三方依赖</td></tr>
         </table>
-        
-        <!-- 技术栈图标（已全部替换为真实 SVG 徽章，可点击跳转） -->
-        <div class="tech-stack">
-            <a href="https://www.java.com" target="_blank">
-                <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
-            </a>
-            <a href="https://developer.android.com" target="_blank">
-                <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android">
-            </a>
-            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
-                <img src="https://img.shields.io/badge/AIDE_Pro-FF5722?style=for-the-badge&logo=androidstudio&logoColor=white" alt="AIDE Pro">
-            </a>
-            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
-                <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
-            </a>
-        </div>
     </div>
 
-    <!-- 重要声明 -->
+    <!-- 重要声明框（游龙那个橙色警告效果） -->
     <div class="notice-box" id="notice">
-        <h3>⚠️ 重要声明</h3>
+        <h3>重要声明：当前为 v1.0.0 正式版</h3>
         <ul>
             <li>本项目为个人开源项目，目前源码结构稳定，可编译出 APK 直接运行。</li>
             <li>请在 Android 8.0 及以上系统使用，需授予存储读写权限。</li>
             <li>源码仅供学习与交流使用，请遵循 MIT 开源协议。</li>
-            <li>如果遇到编译报错，请先检查 AIDE 的 R.java 生成情况，或删除 build/gen 目录后重新编译。</li>
+            <li><strong>AIDE 编译避坑</strong>：如果遇到编译报错，请先检查 R.java 生成情况，或删除 <code>build/</code> 和 <code>gen/</code> 目录后重新编译。若 <code>BuildConfig.java</code> 卡死，同样删除构建目录重新编译。</li>
+            <li>如果遇到无法编译的情况，欢迎提交 Issue，但请附上具体的报错日志。</li>
         </ul>
     </div>
 
-    <!-- 相关链接 -->
+    <div class="section">
+        <h2>项目结构</h2>
+        <pre>LiteMask/
+├── app/
+│   └── src/
+│       └── main/
+│           ├── java/com/huanling/application/  &lt;-- 核心 Java 代码
+│           │   ├── mainactivity.java
+│           │   ├── homefragment.java
+│           │   ├── filefragment.java
+│           │   ├── minefragment.java
+│           │   ├── splashactivity.java
+│           │   └── globalapplication.java
+│           ├── res/                            &lt;-- UI 资源文件
+│           │   ├── layout/
+│           │   ├── drawable/
+│           │   └── values/
+│           └── AndroidManifest.xml
+├── .gitignore
+├── LICENSE
+└── README.md</pre>
+    </div>
+
     <div class="section" id="links">
         <h2>相关链接</h2>
         <ul>
@@ -296,10 +362,9 @@
         </ul>
     </div>
 
-    <!-- 底部 -->
     <div class="footer">
         <p>© 2026 南辞 | 幻灵终端 LiteMask | 遵循 MIT 开源协议</p>
     </div>
 
 </body>
-</html>
+                                                                        </html>
