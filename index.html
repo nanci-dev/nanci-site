@@ -30,7 +30,6 @@
             max-width: 860px;
             margin: 0 auto;
         }
-        /* 顶部标题区 */
         .header {
             text-align: center;
             margin-bottom: 24px;
@@ -53,12 +52,21 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 6px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .badges a {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .badges a:active {
+            transform: scale(0.92);
+            opacity: 0.8;
         }
         .badges img {
             height: 20px;
             border-radius: 4px;
+            display: block;
         }
         /* 快速跳转按钮组 */
         .quick-jump {
@@ -83,7 +91,6 @@
             background: var(--btn-hover);
             transform: scale(0.96);
         }
-        /* 区块通用样式 */
         .section {
             margin-bottom: 24px;
         }
@@ -94,7 +101,6 @@
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border);
         }
-        /* 列表样式 */
         .section ul {
             padding-left: 20px;
         }
@@ -140,7 +146,6 @@
             color: var(--text-bright);
             font-weight: 600;
         }
-        /* 链接样式 */
         a {
             color: var(--link);
             text-decoration: none;
@@ -148,7 +153,6 @@
         a:hover {
             text-decoration: underline;
         }
-        /* 底部 */
         .footer {
             text-align: center;
             font-size: 13px;
@@ -160,23 +164,26 @@
         .footer a {
             color: #8b949e;
         }
-        /* 技术栈图标区 */
+        /* 技术栈图标区（已替换为真实徽章图片） */
         .tech-stack {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 16px;
         }
-        .tech-stack span {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: var(--btn-bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            color: var(--text-bright);
+        .tech-stack a {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .tech-stack a:active {
+            transform: scale(0.92);
+            opacity: 0.8;
+        }
+        .tech-stack img {
+            height: 28px; /* 徽章图片的高度，大小适中 */
+            border-radius: 4px;
+            display: block;
         }
     </style>
 </head>
@@ -186,15 +193,29 @@
     <div class="header">
         <h1>幻灵终端 (LiteMask)</h1>
         <p>轻量级 Android 代码运行与文件管理工具</p>
-        <!-- 项目状态、许可、构建环境徽章（完全复刻图2风格） -->
+        
+        <!-- 顶部徽章（已全部加上链接，可点击） -->
         <div class="badges">
-            <img src="https://img.shields.io/badge/状态-持续开发中-brightgreen.svg" alt="状态">
-            <img src="https://img.shields.io/badge/许可-MIT-blue.svg" alt="许可">
-            <img src="https://img.shields.io/badge/Java-100%25-orange.svg" alt="语言">
-            <img src="https://img.shields.io/badge/AIDE-Pro-red.svg" alt="构建工具">
-            <img src="https://img.shields.io/badge/Min%20SDK-API%2026-green.svg" alt="Min SDK">
-            <img src="https://img.shields.io/badge/PRs-welcome-blueviolet.svg" alt="PRs">
+            <a href="https://github.com/nanci-dev/LiteMask/issues" target="_blank">
+                <img src="https://img.shields.io/badge/状态-持续开发中-brightgreen.svg" alt="状态">
+            </a>
+            <a href="https://github.com/nanci-dev/LiteMask/blob/main/LICENSE" target="_blank">
+                <img src="https://img.shields.io/badge/许可-MIT-blue.svg" alt="许可">
+            </a>
+            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
+                <img src="https://img.shields.io/badge/Java-100%25-orange.svg" alt="语言">
+            </a>
+            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
+                <img src="https://img.shields.io/badge/AIDE-Pro-red.svg" alt="构建工具">
+            </a>
+            <a href="https://developer.android.com" target="_blank">
+                <img src="https://img.shields.io/badge/Min%20SDK-API%2026-green.svg" alt="Min SDK">
+            </a>
+            <a href="https://github.com/nanci-dev/LiteMask/pulls" target="_blank">
+                <img src="https://img.shields.io/badge/PRs-welcome-blueviolet.svg" alt="PRs">
+            </a>
         </div>
+        
         <!-- 快速跳转按钮 -->
         <div class="quick-jump">
             <a href="#intro">项目简介</a>
@@ -221,7 +242,7 @@
         </ul>
     </div>
 
-    <!-- 构建环境（完全对标图2的表格风格） -->
+    <!-- 构建环境 -->
     <div class="section" id="env">
         <h2>构建环境</h2>
         <table>
@@ -232,16 +253,25 @@
             <tr><td>主题</td><td>Theme.Material.NoActionBar</td></tr>
             <tr><td>外部依赖</td><td>原生 SDK，无第三方依赖</td></tr>
         </table>
-        <!-- 技术栈图标 -->
+        
+        <!-- 技术栈图标（已全部替换为真实 SVG 徽章，可点击跳转） -->
         <div class="tech-stack">
-            <span>☕ Java</span>
-            <span>🤖 Android</span>
-            <span>📱 AIDE Pro</span>
-            <span>🐙 GitHub</span>
+            <a href="https://www.java.com" target="_blank">
+                <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
+            </a>
+            <a href="https://developer.android.com" target="_blank">
+                <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android">
+            </a>
+            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
+                <img src="https://img.shields.io/badge/AIDE_Pro-FF5722?style=for-the-badge&logo=androidstudio&logoColor=white" alt="AIDE Pro">
+            </a>
+            <a href="https://github.com/nanci-dev/LiteMask" target="_blank">
+                <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+            </a>
         </div>
     </div>
 
-    <!-- 重要声明（完全复刻图2图3的声明框） -->
+    <!-- 重要声明 -->
     <div class="notice-box" id="notice">
         <h3>⚠️ 重要声明</h3>
         <ul>
