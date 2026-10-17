@@ -49,8 +49,8 @@
 
 | 站点 | 链接 | 说明 |
 | :--- | :--- | :--- |
-| 主站 | https://nanci-dev.github.io/nanci-site/ | GitHub Pages 部署 |
-| 副站 | https://hl-35jf377.maozi.io | 帽子云部署，国内直连 |
+| 主站 | https://nanci-dev.github.io/nanci-site/ | 如果你正在使用VPN直接打开这个就行！ |
+| 副站 | https://hl-35jf377.maozi.io | 副站以迁移，后续会正常提供副站 |
 | App 仓库 | https://github.com/nanci-dev/LiteMask | 源码仓库 |
 | 下载页 | https://github.com/nanci-dev/nanci-site/releases | Releases |
 
